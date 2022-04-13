@@ -16,9 +16,12 @@ router.get('/users/:userId', (req, res) => {
 
 router.post('/users', (req, res) => {
   const { name, about, avatar } = req.body;
-
+  // console.log({ name, about, avatar });
   User.create({ name, about, avatar })
-    .then((user) => res.send({ data: user }))
+    .then((user) => {
+      // console.log(user);
+      res.send({ user });
+    })
     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 });
 

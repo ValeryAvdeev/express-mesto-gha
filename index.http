@@ -4,8 +4,11 @@ GET http://localhost:3000/users/
 
 POST http://localhost:3000/users
 
-Content-Type: text/html
+Content-Type: application/json/html
+
 
 {
-    "body": "bar"
+  "data": {"name": "Test User",
+  "about": "Info User",
+  "avatar": "http://www.westend-dentist.ca/wp-content/uploads/2014/01/testimonial-img-man.png"}
 }
