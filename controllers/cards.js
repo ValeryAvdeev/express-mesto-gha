@@ -11,13 +11,13 @@ module.exports.postCard = (req, res) => {
 
   Card.post({ name, link })
     .then((card) => res.send({ card }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка при добавлении карточки' }));
+    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
 
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.id)
     .then((card) => res.send({ data: card }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка при удалении карточки' }));
+    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
 
 module.exports.likeCard = (req, res) => Card.findByIdAndUpdate(
