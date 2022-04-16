@@ -11,7 +11,7 @@ module.exports.getUsers = (req, res, next) => {
 
 module.exports.getUserId = async (req, res, next) => {
   try {
-    const userId = await User.findById(req.params.id);
+    const userId = await User.findById(req.params.userId);
     if (!userId) {
       throw new NotFoundError('Пользователь по указанному _id не найден');
     }
@@ -42,7 +42,7 @@ module.exports.postUser = (req, res, next) => {
 module.exports.createMe = (req, res, next) => {
   const { name, about } = req.body;
 
-  User.findByIdAndUpdate(req.params.id, { name, about }, { new: true, runValidators: true })
+  User.findByIdAndUpdate(req.params._id, { name, about }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
         next(new NotFoundError('Пользователь с указанным _id не найден'));
@@ -62,7 +62,7 @@ module.exports.createMe = (req, res, next) => {
 module.exports.createMeAvatar = (req, res, next) => {
   const { avatar } = req.body;
 
-  User.findByIdAndUpdate(req.params.id, { avatar }, { new: true, runValidators: true })
+  User.findByIdAndUpdate(req.params._id, { avatar }, { new: true, runValidators: true })
     .then((userAvatar) => {
       if (!userAvatar) {
         next(new NotFoundError('Пользователь с указанным _id не найден'));

@@ -2,7 +2,7 @@
 GET http://localhost:3000/users
 
 ### Проверка пользователя по id
-GET http://localhost:3000/users/6259f311d8aa14804e3c4282
+GET http://localhost:3000/users/6259f311d8aa14804e3c4284
 
 ### Добавление нового пользователя
 POST  http://localhost:3000/users
@@ -37,7 +37,7 @@ Content-Type: application/json
 
   {
   "name": "testdelete1f",
-  "link": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=640:*"
+  "link": "https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png",
  }
 
 
@@ -45,7 +45,9 @@ Content-Type: application/json
 DELETE http://localhost:3000/cards/62591e701ca8a93254bbcfe1
 
 ### Добавление лайка карточке
-PUT http://localhost:3000/cards/62586b243d553fb1fa3a591a/likes
+PUT http://localhost:3000/cards/625840f4b877e8ce06cc1356/likes
+# PUT http://localhost:3000/cards/wrongId/likes
+
 
 ###
 POST  http://localhost:3000/cards
@@ -53,5 +55,5 @@ Content-Type: application/json
 
 {
   "name": "1",
-  "link": "23"
+  "link": "23",
 }

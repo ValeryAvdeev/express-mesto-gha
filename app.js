@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const errorHandler = require('./middlewares/error');
 
 const { PORT = 3000 } = process.env;
 
@@ -19,9 +20,13 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(errorHandler);
 app.use('/', require('./routes/users'));
 app.use('/', require('./routes/cards'));
 
+app.use((req, res) => {
+  res.status(404).send({ message: 'страница не найдена' });
+});
 // module.exports.createCard = (req, res) => {
 //   console.log(req.user._id); // _id станет доступен
 // };

@@ -11,7 +11,7 @@ module.exports.getCards = (req, res) => {
 module.exports.postCard = (req, res, next) => {
   const { name, link } = req.body;
 
-  Card.post({ name, link })
+  Card.post({ name, link, owner: req.user._id })
     .then((card) => res.send({ card }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -22,11 +22,13 @@ module.exports.postCard = (req, res, next) => {
 };
 
 module.exports.deleteCard = (req, res, next) => {
-  Card.findByIdAndRemove(req.params.id)
+  Card.findByIdAndRemove(req.params.cardId)
     .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === 'NotFoundError') {
         next(new NotFoundError('Карточка с указанным _id не найдена.'));
+      } else if (err.name === 'ValidationError') {
+        next(new ValidationError('Переданы некорректные данные при создании карточки'));
       }
       next('Произошла ошибка');
     });
@@ -45,7 +47,7 @@ module.exports.likeCard = (req, res, next) => {
       res.status(200).send(card);
     })
     .catch((err) => {
-      if (err.name === 'Validation') {
+      if (err.name === 'ValidationError') {
         next(new ValidationError('Карточка с указанным _id не найдена.'));
       }
       next('Произошла ошибка');
@@ -65,7 +67,7 @@ module.exports.dislikeCard = (req, res, next) => {
       res.status(200).send(card);
     })
     .catch((err) => {
-      if (err.name === 'Validation') {
+      if (err.name === 'ValidationError') {
         next(new ValidationError('Карточка с указанным _id не найдена.'));
       }
       next('Произошла ошибка');
