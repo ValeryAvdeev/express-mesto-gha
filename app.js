@@ -22,9 +22,9 @@ app.use((req, res, next) => {
 app.use('/', require('./routes/users'));
 app.use('/', require('./routes/cards'));
 
-module.exports.createCard = (req, res) => {
-  console.log(req.user._id); // _id станет доступен
-};
+// module.exports.createCard = (req, res) => {
+//   console.log(req.user._id); // _id станет доступен
+// };
 
 app.listen(PORT, () => {
   console.log(`App listening on port: ${PORT}`);
