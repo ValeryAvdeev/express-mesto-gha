@@ -1,8 +1,7 @@
 const User = require('../models/user');
 const { NotFoundError } = require('../error/NotFoundError');
-const { ValidationError } = require('../error/ValidationError');
+const { BadRequestError } = require('../error/BadRequestError');
 
-// работает
 module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.send({ data: users }))
@@ -17,14 +16,12 @@ module.exports.getUserId = async (req, res, next) => {
     }
     res.status(200).send({ data: userId });
   } catch (e) {
-    if (e.name === 'ValidationError') {
-      next(new ValidationError('Некорректный _id пользователя'));
+    if (e.name === 'CastError') {
+      next(new BadRequestError('Некорректный _id пользователя'));
     }
     next(e);
   }
 };
-
-// работает
 
 module.exports.postUser = (req, res, next) => {
   const { name, about, avatar } = req.body;
@@ -32,8 +29,8 @@ module.exports.postUser = (req, res, next) => {
   User.create({ name, about, avatar })
     .then((user) => res.send({ user }))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new ValidationError('Переданы некорректные данные при создании пользователя'));
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Переданы некорректные данные при создании пользователя'));
       }
       next(err);
     });
@@ -41,17 +38,18 @@ module.exports.postUser = (req, res, next) => {
 
 module.exports.createMe = (req, res, next) => {
   const { name, about } = req.body;
-
   User.findByIdAndUpdate(req.params._id, { name, about }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
         next(new NotFoundError('Пользователь с указанным _id не найден'));
       }
+      console.log(user);
       res.send({ data: user });
+      // res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new ValidationError('Переданы некорректные данные при обновлении профиля.'));
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Переданы некорректные данные при обновлении профиля.'));
       } else if (err.name === 'NotFoundError') {
         next(new NotFoundError('Пользователь с указанным _id не найден'));
       }
@@ -70,8 +68,8 @@ module.exports.createMeAvatar = (req, res, next) => {
       res.send({ data: userAvatar });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new ValidationError('Переданы некорректные данные при обновлении профиля.'));
+      if (err.name === 'BadRequestError') {
+        next(new BadRequestError('Переданы некорректные данные при обновлении профиля.'));
       } else if (err.name === 'NotFoundError') {
         next(new NotFoundError('Пользователь с указанным _id не найден'));
       }

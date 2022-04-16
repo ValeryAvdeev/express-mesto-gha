@@ -2,7 +2,7 @@
 GET http://localhost:3000/users
 
 ### Проверка пользователя по id
-GET http://localhost:3000/users/6259f311d8aa14804e3c4284
+GET http://localhost:3000/users/625840f4b877e8ce06cc1355
 
 ### Добавление нового пользователя
 POST  http://localhost:3000/users
@@ -33,20 +33,20 @@ Content-Type: application/json
 
 ### Card Проверка на карточки
 GET  http://localhost:3000/cards
-Content-Type: application/json
+# Content-Type: application/json
 
-  {
-  "name": "testdelete1f",
-  "link": "https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png",
- }
+#   {
+#   "name": "testdelete1f",
+#   "link": "https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png",
+#  }
 
 
 ### Удаление карточки по id
-DELETE http://localhost:3000/cards/62591e701ca8a93254bbcfe1
+DELETE http://localhost:3000/cards/625af2e2aab3058284371aaa
 
 ### Добавление лайка карточке
-PUT http://localhost:3000/cards/625840f4b877e8ce06cc1356/likes
-# PUT http://localhost:3000/cards/wrongId/likes
+# PUT http://localhost:3000/cards/625af30baab3058284371aad/likes
+PUT http://localhost:3000/cards/wrongId/likes
 
 
 ###
@@ -54,6 +54,5 @@ POST  http://localhost:3000/cards
 Content-Type: application/json
 
 {
-  "name": "1",
-  "link": "23",
+  "link": "https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png"
 }
