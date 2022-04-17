@@ -19,8 +19,8 @@ PATCH   http://localhost:3000/users/me
 Content-Type: application/json
 
 {
-  "name": "Жак-Ив Кусто",
-  "about": "Исследователь"
+  "name": "Valery",
+  "about": "Student"
 }
 
 ### Изменить аватар профиля
@@ -33,20 +33,13 @@ Content-Type: application/json
 
 ### Card Проверка на карточки
 GET  http://localhost:3000/cards
-# Content-Type: application/json
-
-#   {
-#   "name": "testdelete1f",
-#   "link": "https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png",
-#  }
-
 
 ### Удаление карточки по id
-DELETE http://localhost:3000/cards/625af2e2aab3058284371aaa
+DELETE http://localhost:3000/cards/b
 
 ### Добавление лайка карточке
-# PUT http://localhost:3000/cards/625af30baab3058284371aad/likes
-PUT http://localhost:3000/cards/wrongId/likes
+PUT http://localhost:3000/cards/625b50b27a049b1fdf87670f/likes
+# PUT http://localhost:3000/cards/wrongId/likes
 
 
 ###
@@ -54,5 +47,6 @@ POST  http://localhost:3000/cards
 Content-Type: application/json
 
 {
+  "name": "testdelete1f",
   "link": "https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png"
 }
