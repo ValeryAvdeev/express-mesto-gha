@@ -1,6 +1,26 @@
+// const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { NotFoundError } = require('../error/NotFoundError');
 const { BadRequestError } = require('../error/BadRequestError');
+
+module.exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+
+  User.findUserByCredentials(email, password)
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('Пользователь не найден');
+      }
+      const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
+      res
+        .cookie('jwt', token, {
+          maxAge: 3600000 * 24 * 7,
+          httpOnly: true,
+        });
+    })
+    .catch((err) => next(err));
+}
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
@@ -23,7 +43,7 @@ module.exports.getUserId = async (req, res, next) => {
   }
 };
 
-module.exports.postUser = (req, res, next) => {
+module.exports.createUser = (req, res, next) => {
   const { name, about, avatar } = req.body;
 
   User.create({ name, about, avatar })
