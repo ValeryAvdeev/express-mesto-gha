@@ -20,7 +20,7 @@ module.exports.login = (req, res, next) => {
         });
     })
     .catch((err) => next(err));
-}
+};
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
@@ -38,6 +38,20 @@ module.exports.getUserId = async (req, res, next) => {
   } catch (e) {
     if (e.name === 'CastError') {
       next(new BadRequestError('Некорректный _id пользователя'));
+    }
+    next(e);
+  }
+};
+
+module.exports.getMe = async (req, res, next) => {
+  try {
+    const userMe = await User.findById(req.user._id);
+    if (userMe) {
+      res.send({ data: userMe });
+    }
+  } catch (e) {
+    if (e.name === 'CastError') {
+      next(new BadRequestError('Некорректный id пользователя'));
     }
     next(e);
   }
