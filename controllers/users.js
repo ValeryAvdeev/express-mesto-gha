@@ -1,8 +1,9 @@
-// const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { NotFoundError } = require('../error/NotFoundError');
 const { BadRequestError } = require('../error/BadRequestError');
+const { ConflictError } = require('../error/ConflictError');
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
@@ -57,17 +58,29 @@ module.exports.getMe = async (req, res, next) => {
   }
 };
 
-module.exports.createUser = (req, res, next) => {
-  const { name, about, avatar } = req.body;
-
-  User.create({ name, about, avatar })
-    .then((user) => res.send({ user }))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные при создании пользователя'));
-      }
-      next(err);
+module.exports.createUser = async (req, res, next) => {
+  const {
+    email, password, name, about, avatar,
+  } = req.body;
+  try {
+    const hashPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({
+      email, password: hashPassword, name, about, avatar,
     });
+    res.send({
+      user: {
+        email: user.email,
+        name: user.name,
+        about: user.about,
+        avatar: user.avatar,
+      },
+    });
+  } catch (e) {
+    if (e.name === 11000) {
+      next(new ConflictError('Пользователь с таким email существует'));
+    }
+    next(e);
+  }
 };
 
 module.exports.createMe = (req, res, next) => {
