@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { celebrate, Joi, errors } = require('celebrate');
-const { login, createUser } = require('./controllers/users');
+const { newLogin, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/error');
 
@@ -21,9 +21,9 @@ app.use(cookieParser());
 app.use('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
+    password: Joi.string().required(),
   }),
-}), login);
+}), newLogin);
 
 app.use('/signup', celebrate({
   body: Joi.object().keys({
@@ -43,8 +43,9 @@ app.use((req, res) => {
   res.status(404).send({ message: 'страница не найдена' });
 });
 
-app.use(errorHandler);
 app.use(errors());
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`App listening on port: ${PORT}`);

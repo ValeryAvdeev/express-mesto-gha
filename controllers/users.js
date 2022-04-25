@@ -7,11 +7,9 @@ const { ConflictError } = require('../error/ConflictError');
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
-  // console.log(req.body);
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      console.log(email);
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
@@ -23,9 +21,33 @@ module.exports.login = (req, res, next) => {
         });
     })
     .catch((err) => {
-      console.log(err.name);
       next(err);
     });
+};
+
+module.exports.newLogin = async (req, res, next) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email }).select('+password');
+    if (!user) {
+      throw new NotFoundError('неверный логин или пароль');
+    } else {
+      const matched = await bcrypt.compare(password, user.password);
+      if (!matched) {
+        throw new NotFoundError('неверный логин или пароль');
+      }
+      const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
+      return res
+        .cookie('jwt', token, {
+          maxAge: 3600000 * 24 * 7,
+          httpOnly: true,
+        })
+        .send(user)
+        .end();
+    }
+  } catch (e) {
+    next(e);
+  }
 };
 
 module.exports.getUsers = (req, res, next) => {
@@ -83,6 +105,8 @@ module.exports.createUser = async (req, res, next) => {
       },
     });
   } catch (e) {
+    console.log(e.name);
+
     if (e.name === 11000) {
       next(new ConflictError('Пользователь с таким email существует'));
     }
@@ -102,7 +126,7 @@ module.exports.createMe = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные при обновлении профиля.'));
+        next(new BadRequestError('Переданы некорректные данные профиля.'));
       }
       next(err);
     });
