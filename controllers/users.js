@@ -37,7 +37,7 @@ module.exports.newLogin = async (req, res, next) => {
         throw new NotFoundError('неверный логин или пароль');
       }
       const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
-      return res
+      res
         .cookie('jwt', token, {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
