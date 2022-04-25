@@ -1,14 +1,12 @@
 const jsonwebtoken = require('jsonwebtoken');
 const { AuthorizationError } = require('../error/AuthorizationError');
 
-const extractBearerToken = (header) => {
-  return header.replace('Bearer ', '');
-};
+const extractBearerToken = (header) => header.replace('Bearer ', '');
 
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization || !authorization.startWith('Bearer ')) {
-    return new AuthorizationError('Необходима авторизация');
+    throw new AuthorizationError('Необходима авторизация');
   }
 
   const token = extractBearerToken(authorization);

@@ -7,9 +7,11 @@ const { ConflictError } = require('../error/ConflictError');
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
+  // console.log(req.body);
 
-  User.findUserByCredentials(email, password)
+  return User.findUserByCredentials(email, password)
     .then((user) => {
+      console.log(email);
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
@@ -20,7 +22,10 @@ module.exports.login = (req, res, next) => {
           httpOnly: true,
         });
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      console.log(err.name);
+      next(err);
+    });
 };
 
 module.exports.getUsers = (req, res, next) => {
