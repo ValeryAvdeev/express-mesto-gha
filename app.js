@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const { login, getMe } = require('./controllers/users');
 const auth = require('./middlewares/auth');
@@ -15,13 +16,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.use((req, res, next) => {
-//   req.user = {
-//     _id: '625840f4b877e8ce06cc1356',
-//   };
+app.use(cookieParser());
 
-//   next();
-// });
 app.use('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
