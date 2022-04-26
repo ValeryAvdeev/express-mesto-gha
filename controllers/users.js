@@ -42,7 +42,7 @@ module.exports.newLogin = async (req, res, next) => {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
         })
-        .send(token)
+        .send({ user })
         .end();
     }
   } catch (e) {
