@@ -4,9 +4,9 @@ const validator = require('validator');
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
-    unique: true,
     required: true,
     validate: [validator.isEmail, 'введен не верный email.'],
+    unique: true,
   },
   password: {
     type: String,

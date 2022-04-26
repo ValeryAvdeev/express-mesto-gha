@@ -42,7 +42,7 @@ module.exports.newLogin = async (req, res, next) => {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
         })
-        .send(user)
+        .send(token)
         .end();
     }
   } catch (e) {
@@ -92,11 +92,26 @@ module.exports.createUser = async (req, res, next) => {
     email, password, name, about, avatar,
   } = req.body;
   try {
-    const hashPassword = await bcrypt.hash(password, 10);
+    const hash = await bcrypt.hash(password, 10);
     const user = await User.create({
-      email, password: hashPassword, name, about, avatar,
+      email, password: hash, name, about, avatar,
     });
-    res.send({
+    // const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
+    // res
+    //   .cookie('jwt', token, {
+    //     maxAge: 3600000 * 24 * 7,
+    //     httpOnly: true,
+    //   })
+    //   .send({
+    //     user: {
+    //       email: user.email,
+    //       name: user.name,
+    //       about: user.about,
+    //       avatar: user.avatar,
+    //     },
+    //   })
+    //   .end();
+    res.status(200).send({
       user: {
         email: user.email,
         name: user.name,
@@ -105,11 +120,13 @@ module.exports.createUser = async (req, res, next) => {
       },
     });
   } catch (e) {
-    console.log(e.name);
-
-    if (e.name === 11000) {
+    // console.log(e.code);
+    if (e.code === 11000) {
       next(new ConflictError('Пользователь с таким email существует'));
     }
+    // if (e.name === 'ValidationError' || e.name === 'CastError') {
+    //   next(new BadRequestError('Переданы некорректные данные'));
+    // }
     next(e);
   }
 };
