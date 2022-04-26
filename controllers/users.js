@@ -92,25 +92,11 @@ module.exports.createUser = async (req, res, next) => {
     email, password, name, about, avatar,
   } = req.body;
   try {
-    const hash = await bcrypt.hash(password, 10);
+    const hashPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
-      email, password: hash, name, about, avatar,
+      email, password: hashPassword, name, about, avatar,
     });
-    // const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
-    // res
-    //   .cookie('jwt', token, {
-    //     maxAge: 3600000 * 24 * 7,
-    //     httpOnly: true,
-    //   })
-    //   .send({
-    //     user: {
-    //       email: user.email,
-    //       name: user.name,
-    //       about: user.about,
-    //       avatar: user.avatar,
-    //     },
-    //   })
-    //   .end();
+
     res.status(200).send({
       user: {
         email: user.email,
@@ -120,14 +106,13 @@ module.exports.createUser = async (req, res, next) => {
       },
     });
   } catch (e) {
-    // console.log(e.code);
     if (e.code === 11000) {
       next(new ConflictError('Пользователь с таким email существует'));
+    } else if (e.name === 'ValidationError' || e.name === 'CastError') {
+      next(new BadRequestError('Переданы некорректные данные'));
+    } else {
+      next(e);
     }
-    // if (e.name === 'ValidationError' || e.name === 'CastError') {
-    //   next(new BadRequestError('Переданы некорректные данные'));
-    // }
-    next(e);
   }
 };
 
