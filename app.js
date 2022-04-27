@@ -3,7 +3,7 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { celebrate, Joi, errors } = require('celebrate');
-const { newLogin, createUser } = require('./controllers/users');
+const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/error');
 
@@ -23,7 +23,7 @@ app.post('/signin', celebrate({
     email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
-}), newLogin);
+}), login);
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({

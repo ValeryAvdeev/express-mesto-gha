@@ -5,27 +5,27 @@ const { NotFoundError } = require('../error/NotFoundError');
 const { BadRequestError } = require('../error/BadRequestError');
 const { ConflictError } = require('../error/ConflictError');
 
-module.exports.login = (req, res, next) => {
-  const { email, password } = req.body;
+// module.exports.login = (req, res, next) => {
+//   const { email, password } = req.body;
 
-  return User.findUserByCredentials(email, password)
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError('Пользователь не найден');
-      }
-      const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
-      res
-        .cookie('jwt', token, {
-          maxAge: 3600000 * 24 * 7,
-          httpOnly: true,
-        });
-    })
-    .catch((err) => {
-      next(err);
-    });
-};
+//   return User.findUserByCredentials(email, password)
+//     .then((user) => {
+//       if (!user) {
+//         throw new NotFoundError('Пользователь не найден');
+//       }
+//       const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
+//       res
+//         .cookie('jwt', token, {
+//           maxAge: 3600000 * 24 * 7,
+//           httpOnly: true,
+//         });
+//     })
+//     .catch((err) => {
+//       next(err);
+//     });
+// };
 
-module.exports.newLogin = async (req, res, next) => {
+module.exports.login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email }).select('+password');
@@ -76,7 +76,6 @@ module.exports.getUserId = async (req, res, next) => {
 module.exports.getMe = async (req, res, next) => {
   try {
     const userMe = await User.findById(req.user.userId);
-    console.log(req.user.userId);
     if (userMe) {
       res.send({ data: userMe });
     }
