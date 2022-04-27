@@ -88,4 +88,4 @@ Content-Type: application/json
 ### неправильный путь
 
 
-POST http://localhost:3000/404
+POST http://localhost:3000/gvj

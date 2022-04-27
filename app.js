@@ -42,8 +42,8 @@ app.use('/cards', require('./routes/cards'));
 app.use((req, res) => {
   res.status(404).send({ message: 'страница не найдена' });
 });
-
 app.use(errors());
+
 app.use(errorHandler);
 
 app.listen(PORT, () => {
