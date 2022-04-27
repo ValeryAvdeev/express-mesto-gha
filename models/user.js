@@ -32,23 +32,4 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// userSchema.statics.findUserByCredentials = async function (req, res, next) {
-//   const { email, password } = req.body;
-//   try {
-//     const user = await User.findOne({ email }).select('+password');
-//     if (!user) {
-//       throw new NotFoundError('неверный логин или пароль');
-//     }
-//     const matched = await bcrypt.compare(password, user.password);
-//     if (!matched) {
-//       throw new NotFoundError('неверный логин или пароль');
-//     }
-//     // console.log(matched);
-//     // console.log(user);
-//     return user;
-//   } catch (e) {
-//     next(e);
-//   }
-// };
-
 module.exports = mongoose.model('user', userSchema);

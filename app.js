@@ -1,7 +1,7 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const { newLogin, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');

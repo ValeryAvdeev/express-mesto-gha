@@ -42,7 +42,7 @@ module.exports.newLogin = async (req, res, next) => {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
         })
-        .send({ user })
+        .send({ token })
         .end();
     }
   } catch (e) {
@@ -75,7 +75,8 @@ module.exports.getUserId = async (req, res, next) => {
 
 module.exports.getMe = async (req, res, next) => {
   try {
-    const userMe = await User.findById(req.user._id);
+    const userMe = await User.findById(req.user.userId);
+    console.log(req.user.userId);
     if (userMe) {
       res.send({ data: userMe });
     }
