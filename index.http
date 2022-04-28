@@ -3,21 +3,21 @@ GET http://localhost:3000/users
 
 ### вход пользователя
 
-# POST http://localhost:3000/signin
-# Content-Type: application/json
-# # не существующий пользователь
-# {
-#   "email": "asdfqwer@yandex.ru",
-#   "password": "1234qwer"
-# }
-
 POST http://localhost:3000/signin
 Content-Type: application/json
 
 {
-  "email": "asdf@test.ru",
-  "password": "qwerty1234"
+  "email": "asdfqwerjj@yandex.ru",
+  "password": "1234fghqwer"
 }
+
+# POST http://localhost:3000/signin
+# Content-Type: application/json
+
+# {
+#   "email": "asdf@test.ru",
+#   "password": "qwerty1234"
+# }
 
 ### ругистрация пользователя
 # POST http://localhost:3000/signup
@@ -41,7 +41,7 @@ Content-Type: application/json
 
 ### возвращает информацию о текущем пользователе
 GET http://localhost:3000/users/me
-
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjY4NWVkYzQ4OTZlMDliYzQ4MTc4YjkiLCJpYXQiOjE2NTExNzI2MTcsImV4cCI6MTY1MTc3NzQxN30.dpenGkDM_O8OL1UbewrCljzwsNKgBVuAzRwVn08_ZaM
 
 ### Проверка пользователя по id
 GET http://localhost:3000/users/625840f4b877e8ce06cc1355
@@ -97,3 +97,17 @@ Content-Type: application/json
 
 
 GET http://localhost:3000/gvj
+
+  // try {
+  //   const userMe = await User.findById(req.user._id);
+
+  //   if (!userMe) {
+  //     throw new NotFoundError('Пользователь с id не найден');
+  //   }
+  //   res.send({ data: userMe });
+  // } catch (e) {
+  //   if (e.name === 'CastError') {
+  //     next(new BadRequestError('Некорректный id пользователя'));
+  //   }
+  //   next(e);
+  // }
