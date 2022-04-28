@@ -20,24 +20,24 @@ Content-Type: application/json
 # }
 
 ### ругистрация пользователя
-# POST http://localhost:3000/signup
-# Content-Type: application/json
-
-# {
-#   "email": "asdf@test.ru",
-#   "password": "qwerty1234",
-#   "name": "test test",
-#   "about": "about about",
-#   "avatar": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=640:*"
-# }
-
 POST http://localhost:3000/signup
 Content-Type: application/json
 
 {
-  "email": "test@test.ru",
-  "password": "qwerty1234"
+  "email": "testtest@test.ru",
+  "password": "qwerty1234",
+  "name": "test test",
+  "about": "about about",
+  "avatar": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=640:*"
 }
+
+# POST http://localhost:3000/signup
+# Content-Type: application/json
+
+# {
+#   "email": "test@test.ru",
+#   "password": "qwerty1234"
+# }
 
 ### возвращает информацию о текущем пользователе
 GET http://localhost:3000/users/me
@@ -51,7 +51,7 @@ POST  http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "name": "t",
+  "name": "ппрt",
   "about": "about",
   "avatar": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=640:*"
 }

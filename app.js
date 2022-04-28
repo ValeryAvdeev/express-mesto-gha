@@ -36,7 +36,7 @@ app.post('/signup', celebrate({
 }), createUser);
 
 app.use(auth);
-app.use('/', require('./routes/users'));
+app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
 app.use((req, res) => {
