@@ -52,12 +52,11 @@ module.exports.getUserId = async (req, res, next) => {
   }
 };
 
-// eslint-disable-next-line consistent-return
 module.exports.getMe = async (req, res, next) => {
   try {
-    const userMe = await User.findById(req.user.userId);
+    const userMe = await User.findById(req.user._id);
     if (userMe) {
-      return res.send({ data: userMe });
+      res.send({ data: userMe });
     }
   } catch (e) {
     if (e.name === 'CastError') {
