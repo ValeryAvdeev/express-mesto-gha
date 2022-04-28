@@ -52,6 +52,7 @@ module.exports.getUserId = async (req, res, next) => {
   }
 };
 
+// eslint-disable-next-line consistent-return
 module.exports.getMe = async (req, res, next) => {
   try {
     const userMe = await User.findById(req.user.userId);
