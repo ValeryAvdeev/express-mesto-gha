@@ -4,37 +4,18 @@ const User = require('../models/user');
 const { NotFoundError } = require('../error/NotFoundError');
 const { BadRequestError } = require('../error/BadRequestError');
 const { ConflictError } = require('../error/ConflictError');
-
-// module.exports.login = (req, res, next) => {
-//   const { email, password } = req.body;
-
-//   return User.findUserByCredentials(email, password)
-//     .then((user) => {
-//       if (!user) {
-//         throw new NotFoundError('Пользователь не найден');
-//       }
-//       const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
-//       res
-//         .cookie('jwt', token, {
-//           maxAge: 3600000 * 24 * 7,
-//           httpOnly: true,
-//         });
-//     })
-//     .catch((err) => {
-//       next(err);
-//     });
-// };
+const { AuthorizationError } = require('../error/AuthorizationError');
 
 module.exports.login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
-      throw new NotFoundError('неверный логин или пароль');
+      throw new AuthorizationError('неверный логин или пароль');
     } else {
       const matched = await bcrypt.compare(password, user.password);
       if (!matched) {
-        throw new NotFoundError('неверный логин или пароль');
+        throw new AuthorizationError('неверный логин или пароль');
       }
       const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
       res
@@ -53,9 +34,7 @@ module.exports.login = async (req, res, next) => {
 module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.send({ data: users }))
-    .catch((e) => {
-      next(e);
-    });
+    .catch(next);
 };
 
 module.exports.getUserId = async (req, res, next) => {
@@ -77,7 +56,7 @@ module.exports.getMe = async (req, res, next) => {
   try {
     const userMe = await User.findById(req.user.userId);
     if (userMe) {
-      res.send({ data: userMe });
+      return res.send({ data: userMe });
     }
   } catch (e) {
     if (e.name === 'CastError') {

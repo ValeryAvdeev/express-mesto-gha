@@ -8,7 +8,9 @@ const {
   getMe,
 } = require('../controllers/users');
 
-router.get('/', getUsers);
+router.get('/users', getUsers);
+
+router.get('/users/me', getMe);
 
 router.get('/:userId', celebrate({
   params: Joi.object().keys({
@@ -16,16 +18,14 @@ router.get('/:userId', celebrate({
   }),
 }), getUserId);
 
-router.get('/me', getMe);
-
-router.patch('/me', celebrate({
+router.patch('/users/me', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
   }),
 }), createMe);
 
-router.patch('/me/avatar', celebrate({
+router.patch('/users/me/avatar', celebrate({
   body: Joi.object().keys({
     avatar: Joi.string().pattern(
       /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/,
