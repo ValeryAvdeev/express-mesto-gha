@@ -33,8 +33,16 @@ module.exports.login = async (req, res, next) => {
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
-    .then((users) => res.send({ data: users }))
-    .catch(next);
+    .then((users) => {
+      if (users) {
+        res.send({ data: users });
+      } else {
+        throw new AuthorizationError('пользователь не найден');
+      }
+    })
+    .catch(() => {
+      next();
+    });
 };
 
 module.exports.getUserId = async (req, res, next) => {
