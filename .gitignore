@@ -14,3 +14,4 @@ index.http
 .DS_Store
 .idea
 .vscode
+*.log

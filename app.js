@@ -5,12 +5,15 @@ const bodyParser = require('body-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { NotFoundError } = require('./error/NotFoundError');
 const errorHandler = require('./middlewares/error');
 
 const { PORT = 3000 } = process.env;
 
 const app = express();
+
+app.use(requestLogger);
 
 app.use(cookieParser());
 
@@ -41,6 +44,8 @@ app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
 app.use((req, res, next) => next(new NotFoundError('страница не найдена')));
+
+app.use(errorLogger);
 
 app.use(errors());
 
