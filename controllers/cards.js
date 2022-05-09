@@ -22,23 +22,41 @@ module.exports.postCard = (req, res, next) => {
     });
 };
 
+// old
+// module.exports.deleteCard = (req, res, next) => {
+//   Card.findByIdAndRemove(req.params.cardId)
+//     .then((card) => {
+//       if (!card) {
+//         throw new NotFoundError('Карточка с указанным _id не найдена.');
+//       }
+//       if (card.owner._id.toString() !== req.user._id.toString()) {
+//         throw new ForbiddenError('Эта карточка не Ваша и удалить ее не можете');
+//       }
+//       res.send({ data: card });
+//     })
+//     .catch((err) => {
+//       if (err.name === 'CastError') {
+//         next(new BadRequestError('Переданы некорректные данные'));
+//       }
+//       next(err);
+//     });
+// };
+
 module.exports.deleteCard = (req, res, next) => {
-  Card.findByIdAndRemove(req.params.cardId)
+  Card.findById(req.params._id)
+    .orFail()
+    .catch(() => new NotFoundError('Карточка с указанным _id не найдена.'))
     .then((card) => {
-      if (!card) {
-        throw new NotFoundError('Карточка с указанным _id не найдена.');
-      }
-      if (card.owner._id.toString() !== req.user._id.toString()) {
+      if (card.owner.toString() !== req.user._id) {
         throw new ForbiddenError('Эта карточка не Ваша и удалить ее не можете');
       }
-      res.send({ data: card });
+      Card.findByIdAndDelete(req.params._id)
+        .then((cardData) => {
+          res.send({ data: cardData });
+        })
+        .catch(next);
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new BadRequestError('Переданы некорректные данные'));
-      }
-      next(err);
-    });
+    .catch(next);
 };
 
 module.exports.likeCard = (req, res, next) => {

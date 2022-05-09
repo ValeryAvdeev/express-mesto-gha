@@ -40,8 +40,8 @@ module.exports.getUsers = (req, res, next) => {
         throw new AuthorizationError('пользователь не найден');
       }
     })
-    .catch(() => {
-      next();
+    .catch((err) => {
+      next(err);
     });
 };
 
