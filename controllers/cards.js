@@ -45,10 +45,10 @@ module.exports.postCard = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params._id)
     .orFail()
-    .catch(() => new NotFoundError('Карточка с указанным _id не найдена.'))
+    .catch(() => new NotFoundError('Карточка с указанным _id нет.'))
     .then((card) => {
       if (card.owner.toString() !== req.user._id) {
-        throw new ForbiddenError('Эта карточка не Ваша и удалить ее не можете');
+        throw new ForbiddenError('Эта не Ваша карточка');
       }
       Card.findByIdAndDelete(req.params._id)
         .then((cardData) => {
