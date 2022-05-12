@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
@@ -35,7 +36,6 @@ const allowedCors = [
   'https://51.250.80.172:3000',
 ];
 
-// eslint-disable-next-line consistent-return
 app.use((req, res, next) => {
   const { origin } = req.headers; // Сохраняем источник запроса в переменную origin
   // проверяем, что источник запроса есть среди разрешённых
