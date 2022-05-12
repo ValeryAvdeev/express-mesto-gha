@@ -8,6 +8,7 @@ const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { NotFoundError } = require('./error/NotFoundError');
 const errorHandler = require('./middlewares/error');
+require('dotenv').config();
 
 const { PORT = 3000 } = process.env;
 
