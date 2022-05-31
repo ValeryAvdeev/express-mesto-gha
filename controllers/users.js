@@ -18,11 +18,12 @@ module.exports.login = async (req, res, next) => {
         throw new AuthorizationError('неверный логин или пароль');
       }
       const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
+      console.log(token);
       res
-        .cookie('jwt', token, {
-          maxAge: 3600000 * 24 * 7,
-          httpOnly: true,
-        })
+        // .cookie('jwt', token, {
+        //   maxAge: 3600000 * 24 * 7,
+        //   httpOnly: true,
+        // })
         .send({ token })
         .end();
     }
@@ -63,6 +64,7 @@ module.exports.getUserId = async (req, res, next) => {
 module.exports.getMe = async (req, res, next) => {
   try {
     const userMe = await User.findById(req.user._id);
+    // console.log(userMe);
     if (userMe) {
       res.send({ data: userMe });
     }
