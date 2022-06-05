@@ -36,7 +36,8 @@ module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
       if (users) {
-        res.send({ data: users });
+        // res.send({ data: users });
+        res.send({ users });
       } else {
         throw new AuthorizationError('пользователь не найден');
       }
@@ -52,7 +53,8 @@ module.exports.getUserId = async (req, res, next) => {
     if (!userId) {
       throw new NotFoundError('Пользователь по указанному _id не найден');
     }
-    res.status(200).send({ data: userId });
+    // res.status(200).send({ data: userId });
+    res.status(200).send({ userId });
   } catch (e) {
     if (e.name === 'CastError') {
       next(new BadRequestError('Некорректный _id пользователя'));
@@ -66,7 +68,8 @@ module.exports.getMe = async (req, res, next) => {
     const userMe = await User.findById(req.user._id);
     // console.log(userMe);
     if (userMe) {
-      res.send({ data: userMe });
+      // res.send({ data: userMe });
+      res.send({ userMe });
     }
   } catch (e) {
     if (e.name === 'CastError') {
@@ -113,7 +116,8 @@ module.exports.createMe = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь с указанным _id не найден');
       }
-      res.send({ data: user });
+      // res.send({ data: user });
+      res.send({ user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -131,7 +135,8 @@ module.exports.createMeAvatar = (req, res, next) => {
       if (!userAvatar) {
         throw new NotFoundError('Пользователь с указанным _id не найден');
       }
-      res.send({ data: userAvatar });
+      // res.send({ data: userAvatar });
+      res.send({ userAvatar });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
