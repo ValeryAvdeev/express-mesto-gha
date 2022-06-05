@@ -37,7 +37,7 @@ module.exports.getUsers = (req, res, next) => {
     .then((users) => {
       if (users) {
         // res.send({ data: users });
-        res.send({ users });
+        res.send(users);
       } else {
         throw new AuthorizationError('пользователь не найден');
       }
