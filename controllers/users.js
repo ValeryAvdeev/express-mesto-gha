@@ -54,7 +54,7 @@ module.exports.getUserId = async (req, res, next) => {
       throw new NotFoundError('Пользователь по указанному _id не найден');
     }
     // res.status(200).send({ data: userId });
-    res.status(200).send({ userId });
+    res.status(200).send(userId);
   } catch (e) {
     if (e.name === 'CastError') {
       next(new BadRequestError('Некорректный _id пользователя'));
@@ -89,13 +89,19 @@ module.exports.createUser = async (req, res, next) => {
       email, password: hashPassword, name, about, avatar,
     });
 
+    // res.status(200).send({
+    //   user: {
+    //     email: user.email,
+    //     name: user.name,
+    //     about: user.about,
+    //     avatar: user.avatar,
+    //   },
+    // });
     res.status(200).send({
-      user: {
-        email: user.email,
-        name: user.name,
-        about: user.about,
-        avatar: user.avatar,
-      },
+      email: user.email,
+      name: user.name,
+      about: user.about,
+      avatar: user.avatar,
     });
   } catch (e) {
     if (e.code === 11000) {
@@ -117,7 +123,7 @@ module.exports.createMe = (req, res, next) => {
         throw new NotFoundError('Пользователь с указанным _id не найден');
       }
       // res.send({ data: user });
-      res.send({ user });
+      res.send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
