@@ -32,8 +32,8 @@ const allowedCors = [
   'https://mesto.valery.nomoredomains.work',
   'http://localhost:3000',
   'https://localhost:3000',
-  'http://51.250.80.172:3000',
-  'https://51.250.80.172:3000',
+  'http://51.250.76.152:3000',
+  'https://51.250.76.152:3000',
 ];
 
 app.use((req, res, next) => {
