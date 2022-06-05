@@ -6,7 +6,7 @@ const { ForbiddenError } = require('../error/ForbiddenError');
 module.exports.getCards = (req, res) => {
   Card.find({})
     // .then((cards) => res.send({ data: cards }))
-    .then((cards) => res.send({ cards }))
+    .then((cards) => res.send(cards))
     .catch(() => res.status(500).send({ message: 'Произошла ошибка при получении карточек' }));
 };
 
@@ -54,7 +54,7 @@ module.exports.deleteCard = (req, res, next) => {
       Card.findByIdAndDelete(req.params._id)
         .then((cardData) => {
           // res.send({ data: cardData });
-          res.send({ cardData });
+          res.send(cardData);
         })
         .catch(next);
     })
@@ -92,7 +92,7 @@ module.exports.dislikeCard = (req, res, next) => {
         throw new NotFoundError('Передан несуществующий _id карточки.');
       }
       // res.send({ data: card });
-      res.send({ card });
+      res.send(card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {

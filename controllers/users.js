@@ -69,7 +69,7 @@ module.exports.getMe = async (req, res, next) => {
     // console.log(userMe);
     if (userMe) {
       // res.send({ data: userMe });
-      res.send({ userMe });
+      res.send(userMe);
     }
   } catch (e) {
     if (e.name === 'CastError') {
@@ -136,7 +136,7 @@ module.exports.createMeAvatar = (req, res, next) => {
         throw new NotFoundError('Пользователь с указанным _id не найден');
       }
       // res.send({ data: userAvatar });
-      res.send({ userAvatar });
+      res.send(userAvatar);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
