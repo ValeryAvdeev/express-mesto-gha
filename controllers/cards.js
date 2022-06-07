@@ -44,17 +44,17 @@ module.exports.postCard = (req, res, next) => {
 // };
 
 module.exports.deleteCard = (req, res, next) => {
-  Card.findById(req.params._id)
+  Card.findById(req.params.cardId)
     .orFail()
     .catch(() => new NotFoundError('Карточка с указанным _id нет.'))
     .then((card) => {
       if (card.owner.toString() !== req.user._id) {
         throw new ForbiddenError('Эта не Ваша карточка');
       }
-      Card.findByIdAndDelete(req.params._id)
+      Card.findByIdAndDelete(req.params.cardId)
         .then((cardData) => {
           // res.send({ data: cardData });
-          res.send(cardData);
+          res.send({ cardData });
         })
         .catch(next);
     })
